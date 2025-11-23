@@ -1,0 +1,27 @@
+{
+	"nodes":[
+		{"id":"3b6231f3d2495d28","type":"text","text":"Source Connector ","x":-600,"y":-20,"width":160,"height":60},
+		{"id":"a0110167dfd683f4","type":"text","text":"Target Connector ","x":140,"y":-20,"width":160,"height":60},
+		{"id":"473a1cd1312bc234","type":"text","text":"Catalog","x":-580,"y":-140,"width":120,"height":60},
+		{"id":"935e2f8b175a2d58","type":"text","text":"Transformation Schema","x":140,"y":-140,"width":160,"height":60},
+		{"id":"df3f203a601de902","type":"text","text":"ETL","x":-400,"y":80,"width":80,"height":60},
+		{"id":"c9b1459b2db2a497","type":"text","text":"1) Delta-Lake Connector\n2) Polars for prerprocessing\n3) py_arrow for read and write","x":100,"y":80,"width":220,"height":180},
+		{"id":"e718caaa58e746f1","type":"text","text":"Target Traits\n1) Client(Http calls)\n2) Stream\n3) Sync\n4) BatchSink(Transaction)\n5) StreamSink\n6) Auth\n7) State\n8) Transform\n9) Sink","x":420,"y":-100,"width":300,"height":320},
+		{"id":"e6df94cef0c20698","type":"text","text":"Tap Traits\n1) Discover (Build Catalog)\n2) Client(Http calls)\n3) Stream\n4) Sync\n5) Pagination\n6) Auth\n7) State","x":420,"y":-400,"width":250,"height":260},
+		{"id":"a87e31361c19be4e","type":"text","text":"CLI Triggered","x":-600,"y":80,"width":140,"height":60},
+		{"id":"a9cbae94b19e9046","type":"text","text":"State of Stream Queue","x":-260,"y":260,"width":200,"height":60},
+		{"id":"59ef31e1ab9977a8","type":"text","text":"Data Stream Queue","x":-260,"y":140,"width":200,"height":60},
+		{"id":"0e9b8a9c0286bcfa","type":"text","text":"Structure needs to be defined for table (more  of a loose schema)\nand allow the user to select and cut off the stream as well","x":-660,"y":-380,"width":280,"height":160},
+		{"id":"0b28c8eac8a74700","type":"text","text":"1. State Machine\n2. Streaming (BatchWise)\n3. Live Streaming (maybe)","x":-220,"y":-380,"width":240,"height":160}
+	],
+	"edges":[
+		{"id":"b7665e8d417eee7a","fromNode":"473a1cd1312bc234","fromSide":"bottom","toNode":"3b6231f3d2495d28","toSide":"top"},
+		{"id":"f7d7f303a740b14b","fromNode":"935e2f8b175a2d58","fromSide":"bottom","toNode":"a0110167dfd683f4","toSide":"top"},
+		{"id":"78f84236c0acb7cd","fromNode":"3b6231f3d2495d28","fromSide":"right","toNode":"a0110167dfd683f4","toSide":"left","label":"ETL Queue"},
+		{"id":"8b676f066f79592d","fromNode":"df3f203a601de902","fromSide":"bottom","toNode":"59ef31e1ab9977a8","toSide":"left"},
+		{"id":"c459c72cf11d4118","fromNode":"df3f203a601de902","fromSide":"bottom","toNode":"a9cbae94b19e9046","toSide":"left"},
+		{"id":"f383e2a4333ca221","fromNode":"473a1cd1312bc234","fromSide":"top","toNode":"0e9b8a9c0286bcfa","toSide":"bottom"},
+		{"id":"730ada304cb99bbf","fromNode":"59ef31e1ab9977a8","fromSide":"bottom","toNode":"a9cbae94b19e9046","toSide":"top"},
+		{"id":"2b501076f480aa5e","fromNode":"a87e31361c19be4e","fromSide":"right","toNode":"df3f203a601de902","toSide":"left"}
+	]
+}
