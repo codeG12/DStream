@@ -5,11 +5,10 @@ mod tests {
     use crate::core::protocol::Message;
     use crate::core::traits::*;
     use anyhow::Result;
-    use arrow::datatypes::{DataType, Field, Schema, SchemaRef};
+    use arrow::datatypes::SchemaRef;
     use async_trait::async_trait;
     use futures::stream::{self, BoxStream};
     use serde_json::Value;
-    use std::sync::Arc;
 
     // ========================================================================
     // Mock HTTP Client
@@ -322,7 +321,8 @@ mod tests {
         assert!(page.is_some());
         
         // Test Stream
-        let _stream = tap.stream().await;
+        let stream = tap.stream().await;
+        drop(stream); // Drop to release mutable borrow
         
         // Test Sync
         assert!(tap.sync().await.is_ok());
