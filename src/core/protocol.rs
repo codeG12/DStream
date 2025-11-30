@@ -1,13 +1,311 @@
 use arrow::datatypes::SchemaRef;
 use arrow::record_batch::RecordBatch;
+use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
+use uuid::Uuid;
 
+/// Core message types for the DStream protocol
 #[derive(Debug, Clone)]
 pub enum Message {
-    /// A schema definition message.
-    Schema(SchemaRef),
-    /// A data record message containing a batch of rows.
-    Record(RecordBatch),
-    /// A state message for checkpointing.
-    State(Value),
+    /// Schema definition message
+    Schema(SchemaMessage),
+    /// Data record message
+    Record(RecordMessage),
+    /// State checkpoint message
+    State(StateMessage),
+    /// Catalog discovery message
+    Catalog(CatalogMessage),
+    /// Metrics and monitoring message
+    Metric(MetricMessage),
 }
+
+/// Schema message containing stream schema definition
+#[derive(Debug, Clone)]
+pub struct SchemaMessage {
+    /// Unique message ID
+    pub id: Uuid,
+    /// Stream name
+    pub stream: String,
+    /// Arrow schema
+    pub schema: SchemaRef,
+    /// Primary key properties
+    pub key_properties: Vec<String>,
+    /// Bookmark properties for incremental extraction
+    pub bookmark_properties: Vec<String>,
+    /// Timestamp when schema was captured
+    pub timestamp: DateTime<Utc>,
+}
+
+/// Record message containing actual data
+#[derive(Debug, Clone)]
+pub struct RecordMessage {
+    /// Unique message ID
+    pub id: Uuid,
+    /// Stream name
+    pub stream: String,
+    /// Record batch containing the data
+    pub record: RecordBatch,
+    /// When the data was extracted
+    pub time_extracted: DateTime<Utc>,
+    /// Sequence number for ordering
+    pub sequence: Option<u64>,
+}
+
+/// State message for checkpointing
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StateMessage {
+    /// Unique message ID
+    pub id: Uuid,
+    /// State value (typically contains bookmarks)
+    pub value: Value,
+    /// Timestamp when state was captured
+    pub timestamp: DateTime<Utc>,
+}
+
+/// Catalog message from discovery
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CatalogMessage {
+    /// Unique message ID
+    pub id: Uuid,
+    /// Catalog data
+    pub catalog: Value,
+    /// Timestamp when catalog was generated
+    pub timestamp: DateTime<Utc>,
+}
+
+/// Metric message for monitoring
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MetricMessage {
+    /// Unique message ID
+    pub id: Uuid,
+    /// Metric type (e.g., "record_count", "http_request")
+    pub metric_type: MetricType,
+    /// Metric value
+    pub value: f64,
+    /// Associated stream (if applicable)
+    pub stream: Option<String>,
+    /// Tags for categorization
+    pub tags: Vec<String>,
+    /// Timestamp when metric was recorded
+    pub timestamp: DateTime<Utc>,
+}
+
+/// Types of metrics
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum MetricType {
+    /// Number of records processed
+    RecordCount,
+    /// HTTP request made
+    HttpRequest,
+    /// Bytes processed
+    BytesProcessed,
+    /// Processing time in milliseconds
+    ProcessingTime,
+    /// Error count
+    ErrorCount,
+    /// Custom metric
+    Custom(String),
+}
+
+// Builder implementations for ergonomic message construction
+
+impl SchemaMessage {
+    /// Create a new schema message
+    pub fn new(stream: String, schema: SchemaRef) -> Self {
+        Self {
+            id: Uuid::new_v4(),
+            stream,
+            schema,
+            key_properties: Vec::new(),
+            bookmark_properties: Vec::new(),
+            timestamp: Utc::now(),
+        }
+    }
+
+    /// Set key properties
+    pub fn with_key_properties(mut self, keys: Vec<String>) -> Self {
+        self.key_properties = keys;
+        self
+    }
+
+    /// Set bookmark properties
+    pub fn with_bookmark_properties(mut self, bookmarks: Vec<String>) -> Self {
+        self.bookmark_properties = bookmarks;
+        self
+    }
+}
+
+impl RecordMessage {
+    /// Create a new record message
+    pub fn new(stream: String, record: RecordBatch) -> Self {
+        Self {
+            id: Uuid::new_v4(),
+            stream,
+            record,
+            time_extracted: Utc::now(),
+            sequence: None,
+        }
+    }
+
+    /// Set sequence number
+    pub fn with_sequence(mut self, seq: u64) -> Self {
+        self.sequence = Some(seq);
+        self
+    }
+
+    /// Get the number of rows in this record batch
+    pub fn row_count(&self) -> usize {
+        self.record.num_rows()
+    }
+}
+
+impl StateMessage {
+    /// Create a new state message
+    pub fn new(value: Value) -> Self {
+        Self {
+            id: Uuid::new_v4(),
+            value,
+            timestamp: Utc::now(),
+        }
+    }
+}
+
+impl CatalogMessage {
+    /// Create a new catalog message
+    pub fn new(catalog: Value) -> Self {
+        Self {
+            id: Uuid::new_v4(),
+            catalog,
+            timestamp: Utc::now(),
+        }
+    }
+}
+
+impl MetricMessage {
+    /// Create a new metric message
+    pub fn new(metric_type: MetricType, value: f64) -> Self {
+        Self {
+            id: Uuid::new_v4(),
+            metric_type,
+            value,
+            stream: None,
+            tags: Vec::new(),
+            timestamp: Utc::now(),
+        }
+    }
+
+    /// Set associated stream
+    pub fn with_stream(mut self, stream: String) -> Self {
+        self.stream = Some(stream);
+        self
+    }
+
+    /// Add tags
+    pub fn with_tags(mut self, tags: Vec<String>) -> Self {
+        self.tags = tags;
+        self
+    }
+
+    /// Add a single tag
+    pub fn add_tag(mut self, tag: String) -> Self {
+        self.tags.push(tag);
+        self
+    }
+}
+
+impl Message {
+    /// Get the message type as a string
+    pub fn message_type(&self) -> &'static str {
+        match self {
+            Message::Schema(_) => "SCHEMA",
+            Message::Record(_) => "RECORD",
+            Message::State(_) => "STATE",
+            Message::Catalog(_) => "CATALOG",
+            Message::Metric(_) => "METRIC",
+        }
+    }
+
+    /// Check if this is a schema message
+    pub fn is_schema(&self) -> bool {
+        matches!(self, Message::Schema(_))
+    }
+
+    /// Check if this is a record message
+    pub fn is_record(&self) -> bool {
+        matches!(self, Message::Record(_))
+    }
+
+    /// Check if this is a state message
+    pub fn is_state(&self) -> bool {
+        matches!(self, Message::State(_))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use arrow::array::Int32Array;
+    use arrow::datatypes::{DataType, Field, Schema};
+    use std::sync::Arc;
+
+    #[test]
+    fn test_schema_message_creation() {
+        let schema = Arc::new(Schema::new(vec![Field::new("id", DataType::Int32, false)]));
+        let msg = SchemaMessage::new("test_stream".to_string(), schema.clone())
+            .with_key_properties(vec!["id".to_string()]);
+
+        assert_eq!(msg.stream, "test_stream");
+        assert_eq!(msg.key_properties, vec!["id"]);
+        assert_eq!(msg.schema, schema);
+    }
+
+    #[test]
+    fn test_record_message_creation() {
+        let schema = Arc::new(Schema::new(vec![Field::new("id", DataType::Int32, false)]));
+        let array = Int32Array::from(vec![1, 2, 3]);
+        let batch = RecordBatch::try_new(schema, vec![Arc::new(array)]).unwrap();
+
+        let msg = RecordMessage::new("test_stream".to_string(), batch).with_sequence(1);
+
+        assert_eq!(msg.stream, "test_stream");
+        assert_eq!(msg.sequence, Some(1));
+        assert_eq!(msg.row_count(), 3);
+    }
+
+    #[test]
+    fn test_state_message_creation() {
+        let state_value = serde_json::json!({
+            "bookmarks": {
+                "users": "2024-01-01"
+            }
+        });
+
+        let msg = StateMessage::new(state_value.clone());
+        assert_eq!(msg.value, state_value);
+    }
+
+    #[test]
+    fn test_metric_message_creation() {
+        let msg = MetricMessage::new(MetricType::RecordCount, 100.0)
+            .with_stream("users".to_string())
+            .add_tag("batch_1".to_string());
+
+        assert_eq!(msg.metric_type, MetricType::RecordCount);
+        assert_eq!(msg.value, 100.0);
+        assert_eq!(msg.stream, Some("users".to_string()));
+        assert_eq!(msg.tags.len(), 1);
+    }
+
+    #[test]
+    fn test_message_type_checks() {
+        let schema = Arc::new(Schema::new(vec![Field::new("id", DataType::Int32, false)]));
+        let schema_msg = Message::Schema(SchemaMessage::new("test".to_string(), schema));
+
+        assert!(schema_msg.is_schema());
+        assert!(!schema_msg.is_record());
+        assert_eq!(schema_msg.message_type(), "SCHEMA");
+    }
+}
+
