@@ -1,0 +1,17 @@
+{
+  "name": "example-api-tap",
+  "type": "rest-api",
+  "connection": {
+    "url": "https://api.example.com/v1"
+  },
+  "auth": {
+    "type": "api_key",
+    "key": "your-api-key-here",
+    "header": "X-API-Key"
+  },
+  "streams": [
+    "users",
+    "orders",
+    "products"
+  ]
+}

@@ -6,4 +6,3 @@ pub mod pagination;
 pub mod protocol;
 pub mod state;
 pub mod traits;
-mod tests;

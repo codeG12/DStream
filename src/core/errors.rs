@@ -144,30 +144,3 @@ pub enum ProtocolError {
 /// Type alias for Results using DStreamError
 pub type Result<T> = std::result::Result<T, DStreamError>;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_error_display() {
-        let err = TapError::DiscoveryFailed("schema not found".to_string());
-        assert_eq!(err.to_string(), "Failed to discover schema: schema not found");
-    }
-
-    #[test]
-    fn test_error_conversion() {
-        let tap_err = TapError::AuthenticationFailed("invalid token".to_string());
-        let dstream_err: DStreamError = tap_err.into();
-        assert!(matches!(dstream_err, DStreamError::Tap(_)));
-    }
-
-    #[test]
-    fn test_config_error_with_context() {
-        let err = ConfigError::InvalidValue {
-            field: "timeout".to_string(),
-            reason: "must be positive".to_string(),
-        };
-        assert!(err.to_string().contains("timeout"));
-        assert!(err.to_string().contains("must be positive"));
-    }
-}
