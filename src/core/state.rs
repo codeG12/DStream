@@ -67,10 +67,11 @@ impl StateManager {
         }
 
         let path_str = self.state_path.display().to_string();
-        let contents = fs::read_to_string(&self.state_path).map_err(|e| StateError::LoadFailed {
-            path: path_str.clone(),
-            reason: e.to_string(),
-        })?;
+        let contents =
+            fs::read_to_string(&self.state_path).map_err(|e| StateError::LoadFailed {
+                path: path_str.clone(),
+                reason: e.to_string(),
+            })?;
 
         self.state = serde_json::from_str(&contents).map_err(|e| StateError::LoadFailed {
             path: path_str,
@@ -93,12 +94,11 @@ impl StateManager {
         self.state.last_updated = Some(Utc::now());
 
         let path_str = self.state_path.display().to_string();
-        let contents = serde_json::to_string_pretty(&self.state).map_err(|e| {
-            StateError::SaveFailed {
+        let contents =
+            serde_json::to_string_pretty(&self.state).map_err(|e| StateError::SaveFailed {
                 path: path_str.clone(),
                 reason: e.to_string(),
-            }
-        })?;
+            })?;
 
         // Create parent directory if it doesn't exist
         if let Some(parent) = self.state_path.parent() {
@@ -212,4 +212,3 @@ impl Drop for StateManager {
         }
     }
 }
-

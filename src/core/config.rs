@@ -46,7 +46,9 @@ pub struct TargetConfig {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ConnectionConfig {
-    Url { url: String },
+    Url {
+        url: String,
+    },
 
     HostPort {
         host: String,
@@ -55,7 +57,9 @@ pub enum ConnectionConfig {
         database: Option<String>,
     },
 
-    FilePath { path: String },
+    FilePath {
+        path: String,
+    },
 
     Custom(HashMap<String, Value>),
 }
@@ -71,10 +75,15 @@ pub enum AuthConfig {
         header: Option<String>,
     },
 
-    Bearer { token: String },
+    Bearer {
+        token: String,
+    },
 
     /// Basic authentication
-    Basic { username: String, password: String },
+    Basic {
+        username: String,
+        password: String,
+    },
 
     OAuth2 {
         client_id: String,
@@ -171,4 +180,3 @@ impl TargetConfig {
 fn default_batch_size() -> usize {
     1000
 }
-

@@ -143,4 +143,3 @@ pub enum ProtocolError {
 
 /// Type alias for Results using DStreamError
 pub type Result<T> = std::result::Result<T, DStreamError>;
-

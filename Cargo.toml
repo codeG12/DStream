@@ -18,6 +18,8 @@ tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
 url = "2.5"
 uuid = { version = "1.10", features = ["v4", "serde"] }
 clap = { version = "4.5", features = ["derive"] }
+reqwest = "0.12.26"
+
 
 [dev-dependencies]
 tempfile = "3.8"

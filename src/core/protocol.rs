@@ -8,15 +8,10 @@ use uuid::Uuid;
 /// Core message types for the DStream protocol
 #[derive(Debug, Clone)]
 pub enum Message {
-    /// Schema definition message
     Schema(SchemaMessage),
-    /// Data record message
     Record(RecordMessage),
-    /// State checkpoint message
     State(StateMessage),
-    /// Catalog discovery message
     Catalog(CatalogMessage),
-    /// Metrics and monitoring message
     Metric(MetricMessage),
 }
 
@@ -227,19 +222,15 @@ impl Message {
         }
     }
 
-    /// Check if this is a schema message
     pub fn is_schema(&self) -> bool {
         matches!(self, Message::Schema(_))
     }
 
-    /// Check if this is a record message
     pub fn is_record(&self) -> bool {
         matches!(self, Message::Record(_))
     }
 
-    /// Check if this is a state message
     pub fn is_state(&self) -> bool {
         matches!(self, Message::State(_))
     }
 }
-

@@ -1,5 +1,5 @@
 use clap::Parser;
-use dstreams::cli::{Cli, run};
+use dstreams::cli::{run, Cli};
 use tracing_subscriber::{fmt, EnvFilter};
 
 #[tokio::main]
@@ -12,10 +12,7 @@ async fn main() {
         EnvFilter::new("dstreams=info")
     };
 
-    fmt()
-        .with_env_filter(filter)
-        .with_target(false)
-        .init();
+    fmt().with_env_filter(filter).with_target(false).init();
 
     if let Err(e) = run(cli.command).await {
         tracing::error!("Error: {:#}", e);
