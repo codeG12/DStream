@@ -90,17 +90,11 @@ pub struct MetricMessage {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum MetricType {
-    /// Number of records processed
     RecordCount,
-    /// HTTP request made
     HttpRequest,
-    /// Bytes processed
     BytesProcessed,
-    /// Processing time in milliseconds
     ProcessingTime,
-    /// Error count
     ErrorCount,
-    /// Custom metric
     Custom(String),
 }
 

@@ -12,19 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cf763c0-5ea3-4d5f-b4a4-9164a337d6a9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/project_x.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project_x.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cli/runner.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/runner.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/catalog.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/catalog.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/config.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/config.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/errors.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/errors.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/core/protocol.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/protocol.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/state.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/state.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/traits.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/traits.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +88,9 @@
       <updated>1763906242321</updated>
       <workItem from="1763906243619" duration="1052000" />
       <workItem from="1765805861399" duration="2099000" />
-      <workItem from="1765907890119" duration="3147000" />
+      <workItem from="1765907890119" duration="3749000" />
+      <workItem from="1765947320101" duration="34000" />
+      <workItem from="1765992640400" duration="49000" />
     </task>
     <servers />
   </component>
