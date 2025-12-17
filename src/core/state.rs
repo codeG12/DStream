@@ -6,23 +6,19 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
-/// Represents the state of a data synchronization process
+
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct State {
-    /// Per-stream bookmarks for incremental extraction
     #[serde(default)]
     pub bookmarks: HashMap<String, Bookmark>,
 
-    /// Global state values
     #[serde(default)]
     pub global: HashMap<String, Value>,
 
-    /// Timestamp of last state update
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_updated: Option<DateTime<Utc>>,
 }
 
-/// Bookmark for a specific stream
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Bookmark {
     /// Replication key value (e.g., timestamp, ID)
