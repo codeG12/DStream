@@ -101,7 +101,6 @@ pub enum MetricType {
 // Builder implementations for ergonomic message construction
 
 impl SchemaMessage {
-    /// Create a new schema message
     pub fn new(stream: String, schema: SchemaRef) -> Self {
         Self {
             id: Uuid::new_v4(),
@@ -113,13 +112,11 @@ impl SchemaMessage {
         }
     }
 
-    /// Set key properties
     pub fn with_key_properties(mut self, keys: Vec<String>) -> Self {
         self.key_properties = keys;
         self
     }
 
-    /// Set bookmark properties
     pub fn with_bookmark_properties(mut self, bookmarks: Vec<String>) -> Self {
         self.bookmark_properties = bookmarks;
         self
@@ -127,7 +124,6 @@ impl SchemaMessage {
 }
 
 impl RecordMessage {
-    /// Create a new record message
     pub fn new(stream: String, record: RecordBatch) -> Self {
         Self {
             id: Uuid::new_v4(),
@@ -144,7 +140,6 @@ impl RecordMessage {
         self
     }
 
-    /// Get the number of rows in this record batch
     pub fn row_count(&self) -> usize {
         self.record.num_rows()
     }
