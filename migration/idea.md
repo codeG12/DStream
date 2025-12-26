@@ -52,19 +52,6 @@ last_sync_at TIMESTAMP,
 updated_at TIMESTAMP DEFAULT NOW(),
 PRIMARY KEY (stream_id, table_name)
 );
-
--- 5. Sync runs (lightweight, can be pruned)
-CREATE TABLE sync_runs (
-run_id SERIAL PRIMARY KEY,
-stream_id INT NOT NULL REFERENCES streams(stream_id),
-status VARCHAR(50) DEFAULT 'running',
-records_extracted INT DEFAULT 0,
-records_loaded INT DEFAULT 0,
-started_at TIMESTAMP DEFAULT NOW(),
-completed_at TIMESTAMP,
-error_message TEXT
-);
-CREATE INDEX idx_sync_runs_stream ON sync_runs(stream_id, started_at DESC);
 ```
 
 ``` text

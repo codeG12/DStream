@@ -12,9 +12,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cf763c0-5ea3-4d5f-b4a4-9164a337d6a9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/dal/idea.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/Dstream/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/Dstream/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/Dstream/migrations/0002_connector.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/Dstream/migrations/0003_stream.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/Dstream/migrations/0004_catalog.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/Dstream/migrations/0005_state.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/Dstream/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/manage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/proj/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/proj/asgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/proj/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/proj/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/migration/proj/wsgi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dal/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/dal/query.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/protocol.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/protocol.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dal/idea.md" beforeDir="false" afterPath="$PROJECT_DIR$/migration/idea.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib.rs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,27 +60,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/user/workspace/rust/DStream&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/user/workspace/rust/DStream/migration",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.first.attach.projects": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/migration" />
+      <recent name="$PROJECT_DIR$/migration/proj" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/migration" />
+      <recent name="$PROJECT_DIR$/migration/Dstream" />
+      <recent name="$PROJECT_DIR$/migration/Dstream/migrations" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/src/migration/src" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package DStream --bin DStream" />
@@ -99,11 +128,16 @@
       <workItem from="1765907890119" duration="3749000" />
       <workItem from="1765947320101" duration="34000" />
       <workItem from="1765992640400" duration="5420000" />
-      <workItem from="1766336920502" duration="100000" />
+      <workItem from="1766336920502" duration="502000" />
+      <workItem from="1766572674982" duration="1276000" />
+      <workItem from="1766669643991" duration="17937000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.py" />
   </component>
 </project>
