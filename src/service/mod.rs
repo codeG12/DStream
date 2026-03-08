@@ -1,3 +1,3 @@
-pub mod connector_service;
-pub mod stream_service;
-pub mod sync_service;
+pub mod connector;
+pub mod stream;
+pub mod sync;

@@ -19,21 +19,17 @@ pub async fn create(pool: &PgPool, input: CreateConnector) -> sqlx::Result<Conne
 }
 
 pub async fn get_by_id(pool: &PgPool, connector_id: i32) -> sqlx::Result<Option<ConnectorRow>> {
-    sqlx::query_as::<_, ConnectorRow>(
-        "SELECT * FROM connectors WHERE connector_id = $1",
-    )
-    .bind(connector_id)
-    .fetch_optional(pool)
-    .await
+    sqlx::query_as::<_, ConnectorRow>("SELECT * FROM connectors WHERE connector_id = $1")
+        .bind(connector_id)
+        .fetch_optional(pool)
+        .await
 }
 
 pub async fn get_by_name(pool: &PgPool, name: &str) -> sqlx::Result<Option<ConnectorRow>> {
-    sqlx::query_as::<_, ConnectorRow>(
-        "SELECT * FROM connectors WHERE connector_name = $1",
-    )
-    .bind(name)
-    .fetch_optional(pool)
-    .await
+    sqlx::query_as::<_, ConnectorRow>("SELECT * FROM connectors WHERE connector_name = $1")
+        .bind(name)
+        .fetch_optional(pool)
+        .await
 }
 
 pub async fn list(pool: &PgPool) -> sqlx::Result<Vec<ConnectorRow>> {

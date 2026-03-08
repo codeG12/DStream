@@ -1,7 +1,7 @@
+pub mod catalog;
+pub mod connector;
 pub mod models;
-pub mod connector_dal;
-pub mod stream_dal;
-pub mod catalog_dal;
-pub mod state_dal;
+pub mod state;
+pub mod stream;
 
 pub type DbPool = sqlx::PgPool;

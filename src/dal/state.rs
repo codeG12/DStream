@@ -36,22 +36,18 @@ pub async fn get(
     stream_id: i32,
     table_name: &str,
 ) -> sqlx::Result<Option<StateRow>> {
-    sqlx::query_as::<_, StateRow>(
-        "SELECT * FROM state WHERE stream_id = $1 AND table_name = $2",
-    )
-    .bind(stream_id)
-    .bind(table_name)
-    .fetch_optional(pool)
-    .await
+    sqlx::query_as::<_, StateRow>("SELECT * FROM state WHERE stream_id = $1 AND table_name = $2")
+        .bind(stream_id)
+        .bind(table_name)
+        .fetch_optional(pool)
+        .await
 }
 
 pub async fn list_by_stream(pool: &PgPool, stream_id: i32) -> sqlx::Result<Vec<StateRow>> {
-    sqlx::query_as::<_, StateRow>(
-        "SELECT * FROM state WHERE stream_id = $1 ORDER BY table_name",
-    )
-    .bind(stream_id)
-    .fetch_all(pool)
-    .await
+    sqlx::query_as::<_, StateRow>("SELECT * FROM state WHERE stream_id = $1 ORDER BY table_name")
+        .bind(stream_id)
+        .fetch_all(pool)
+        .await
 }
 
 pub async fn delete(pool: &PgPool, stream_id: i32, table_name: &str) -> sqlx::Result<()> {

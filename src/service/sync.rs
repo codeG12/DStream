@@ -3,8 +3,8 @@ use anyhow::{Context, Result};
 use crate::core::catalog::Catalog;
 use crate::core::config::{TapConfig, TargetConfig};
 use crate::dal::models::UpsertState;
-use crate::dal::{catalog as catalog_dal, state as state_dal, stream};
 use crate::dal::DbPool;
+use crate::dal::{catalog as catalog_dal, state as state_dal, stream};
 
 /// Run the full sync pipeline for a given stream.
 ///
@@ -44,16 +44,12 @@ pub async fn run_sync(
         .await
         .context("Failed to load state")?;
 
-    tracing::info!(
-        bookmarks = state_rows.len(),
-        "Loaded state bookmarks"
-    );
+    tracing::info!(bookmarks = state_rows.len(), "Loaded state bookmarks");
 
     // 4. Load catalog entries for the source connector
-    let catalog_entries =
-        catalog_dal::list_by_connector(pool, stream_row.source_connector_id)
-            .await
-            .context("Failed to load catalog")?;
+    let catalog_entries = catalog_dal::list_by_connector(pool, stream_row.source_connector_id)
+        .await
+        .context("Failed to load catalog")?;
 
     let selected_count = catalog_entries
         .iter()
@@ -80,10 +76,7 @@ pub async fn run_sync(
         .await
         .context("Failed to update sync status")?;
 
-    tracing::info!(
-        stream_id,
-        "Sync completed"
-    );
+    tracing::info!(stream_id, "Sync completed");
 
     Ok(())
 }

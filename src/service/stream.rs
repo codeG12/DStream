@@ -54,36 +54,23 @@ pub async fn get_stream(pool: &DbPool, stream_id: i32) -> Result<StreamRow> {
 
 /// List all streams.
 pub async fn list_streams(pool: &DbPool) -> Result<Vec<StreamRow>> {
-    stream::list(pool)
-        .await
-        .context("Failed to list streams")
+    stream::list(pool).await.context("Failed to list streams")
 }
 
 /// List all streams associated with a given connector (as source or target).
-pub async fn list_streams_by_connector(
-    pool: &DbPool,
-    connector_id: i32,
-) -> Result<Vec<StreamRow>> {
+pub async fn list_streams_by_connector(pool: &DbPool, connector_id: i32) -> Result<Vec<StreamRow>> {
     stream::list_by_connector(pool, connector_id)
         .await
         .context("Failed to list streams by connector")
 }
 
 /// Mark a sync as complete with a given status string.
-pub async fn mark_sync_complete(
-    pool: &DbPool,
-    stream_id: i32,
-    status: &str,
-) -> Result<StreamRow> {
+pub async fn mark_sync_complete(pool: &DbPool, stream_id: i32, status: &str) -> Result<StreamRow> {
     let row = stream::update_sync_status(pool, stream_id, status)
         .await
         .context("Failed to update sync status")?;
 
-    tracing::info!(
-        stream_id,
-        status,
-        "Sync status updated"
-    );
+    tracing::info!(stream_id, status, "Sync status updated");
 
     Ok(row)
 }

@@ -63,11 +63,7 @@ pub async fn update_sync_status(
     .await
 }
 
-pub async fn set_active(
-    pool: &PgPool,
-    stream_id: i32,
-    active: bool,
-) -> sqlx::Result<StreamRow> {
+pub async fn set_active(pool: &PgPool, stream_id: i32, active: bool) -> sqlx::Result<StreamRow> {
     sqlx::query_as::<_, StreamRow>(
         r#"
         UPDATE streams

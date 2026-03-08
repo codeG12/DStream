@@ -32,10 +32,7 @@ pub async fn get_by_id(pool: &PgPool, catalog_id: i32) -> sqlx::Result<Option<Ca
         .await
 }
 
-pub async fn list_by_connector(
-    pool: &PgPool,
-    connector_id: i32,
-) -> sqlx::Result<Vec<CatalogRow>> {
+pub async fn list_by_connector(pool: &PgPool, connector_id: i32) -> sqlx::Result<Vec<CatalogRow>> {
     sqlx::query_as::<_, CatalogRow>(
         "SELECT * FROM catalog WHERE connector_id = $1 ORDER BY catalog_id",
     )

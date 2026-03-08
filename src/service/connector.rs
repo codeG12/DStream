@@ -35,8 +35,7 @@ pub async fn register_tap(pool: &DbPool, config: &TapConfig) -> Result<Connector
 pub async fn register_target(pool: &DbPool, config: &TargetConfig) -> Result<ConnectorRow> {
     config.validate().context("Invalid target configuration")?;
 
-    let config_json =
-        serde_json::to_value(config).context("Failed to serialize target config")?;
+    let config_json = serde_json::to_value(config).context("Failed to serialize target config")?;
 
     let input = CreateConnector {
         connector_name: config.name.clone(),

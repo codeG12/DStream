@@ -6,7 +6,6 @@ use std::collections::HashMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
-
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct State {
     #[serde(default)]
