@@ -34,6 +34,27 @@ class Streams(models.Model):
         db_table = "stream"
 
 
+class StreamConfiguration(models.Model):
+    """
+    This table resolves the flaw.
+    It defines exactly which catalog items belong to which stream.
+    """
+
+    stream = models.ForeignKey(
+        Streams, on_delete=models.CASCADE, related_name="configured_tables"
+    )
+    catalog_item = models.ForeignKey(Catalog, on_delete=models.CASCADE)
+
+    # Moved from Catalog to here
+    is_selected = models.BooleanField(default=True)
+    replication_method = models.CharField(max_length=50, default="FULL_TABLE")
+    replication_key = models.CharField(max_length=255, null=True, blank=True)
+
+    class Meta:
+        db_table = "stream_configuration"
+        unique_together = ("stream", "catalog_item")
+
+
 class Catalog(models.Model):
     catalog_id = models.AutoField(primary_key=True)
 
@@ -49,7 +70,6 @@ class Catalog(models.Model):
     key_properties = models.JSONField(null=True, blank=True)
     replication_method = models.CharField(max_length=50, null=True, blank=True)
     replication_key = models.CharField(max_length=255, null=True, blank=True)
-    is_selected = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -60,13 +80,14 @@ class Catalog(models.Model):
 class State(models.Model):
     id = models.AutoField(primary_key=True)
 
-    stream_id = models.ForeignKey(
-        Streams,
-        on_delete=models.CASCADE,
-        db_column="stream_id",
+    stream_config = models.OneToOneField(
+        StreamConfiguration, on_delete=models.CASCADE, related_name="state"
     )
 
-    table_name = models.CharField(max_length=255)
+    bookmark_value = models.JSONField(
+        null=True, blank=True
+    )  # JSON is better for multi-part keys
+
     bookmark_column = models.CharField(max_length=255, null=True, blank=True)
     bookmark_value = models.CharField(max_length=500, null=True, blank=True)
     bookmark_type = models.CharField(max_length=50, null=True, blank=True)

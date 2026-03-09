@@ -13,6 +13,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4cf763c0-5ea3-4d5f-b4a4-9164a337d6a9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docs/Impl Plan/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/Docs/Impl Plan/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migration/Dstream/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/migration/Dstream/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,6 +118,8 @@
       <workItem from="1766669643991" duration="19516000" />
       <workItem from="1766824229356" duration="9200000" />
       <workItem from="1770863712528" duration="1053000" />
+      <workItem from="1772951380548" duration="7735000" />
+      <workItem from="1773077100740" duration="2890000" />
     </task>
     <servers />
   </component>
