@@ -1,8 +1,8 @@
 use futures::StreamExt;
 
 use crate::core::errors::Result;
-use crate::core::message::StreamEnvelope;
-use crate::core::nats::NatsClient;
+use crate::core::stream::message::StreamEnvelope;
+use crate::core::stream::nats::NatsClient;
 
 /// Target-side consumer that listens for data on a NATS subject.
 pub struct StreamListener {

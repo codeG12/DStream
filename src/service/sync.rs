@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 
-use crate::core::catalog::Catalog;
+use crate::core::protocol::catalog::Catalog;
 use crate::core::config::{TapConfig, TargetConfig};
 use crate::dal::models::UpsertState;
 use crate::dal::DbPool;

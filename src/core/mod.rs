@@ -1,13 +1,7 @@
-pub mod catalog;
-mod client;
 pub mod config;
 pub mod errors;
-pub mod http;
-pub mod listen_stream;
-pub mod message;
-pub mod nats;
-pub mod pagination;
-pub mod protocol;
-pub mod state;
 pub mod traits;
-pub mod write_stream;
+
+pub mod stream;
+pub mod protocol;
+pub mod http;

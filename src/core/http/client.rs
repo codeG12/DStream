@@ -1,4 +1,4 @@
-use crate::core::http::HttpResponse;
+use super::types::HttpResponse;
 use reqwest;
 use reqwest::header::HeaderMap;
 use reqwest::{Body, Client as req_client, Method};

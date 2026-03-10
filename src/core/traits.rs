@@ -1,4 +1,4 @@
-use crate::core::protocol::Message;
+use crate::core::protocol::messages::Message;
 use anyhow::Result;
 use arrow::datatypes::SchemaRef;
 use async_trait::async_trait;

@@ -1,8 +1,8 @@
 use serde_json::Value;
 
 use crate::core::errors::Result;
-use crate::core::message::StreamEnvelope;
-use crate::core::nats::NatsClient;
+use crate::core::stream::message::StreamEnvelope;
+use crate::core::stream::nats::NatsClient;
 
 /// Tap-side publisher that writes data batches to NATS.
 pub struct StreamWriter {

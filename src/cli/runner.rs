@@ -1,7 +1,7 @@
 use crate::cli::commands::{CatalogAction, Commands, StateAction};
-use crate::core::catalog::Catalog;
+use crate::core::protocol::catalog::Catalog;
 use crate::core::config::{TapConfig, TargetConfig};
-use crate::core::state::StateManager;
+use crate::core::protocol::state::StateManager;
 use anyhow::{Context, Result};
 use std::fs;
 use std::path::Path;
