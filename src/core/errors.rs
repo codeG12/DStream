@@ -23,6 +23,10 @@ pub enum DStreamError {
     #[error("Protocol error: {0}")]
     Protocol(#[from] ProtocolError),
 
+    /// NATS messaging errors
+    #[error("NATS error: {0}")]
+    Nats(#[from] NatsError),
+
     /// I/O errors
     #[error("I/O error: {0}")]
     Io(#[from] std::io::Error),
@@ -120,6 +124,22 @@ pub enum StateError {
 
     #[error("Bookmark not found for stream: {0}")]
     BookmarkNotFound(String),
+}
+
+/// NATS messaging errors
+#[derive(Error, Debug)]
+pub enum NatsError {
+    #[error("Failed to connect to NATS: {0}")]
+    ConnectionFailed(String),
+
+    #[error("Failed to publish message: {0}")]
+    PublishFailed(String),
+
+    #[error("Failed to subscribe: {0}")]
+    SubscribeFailed(String),
+
+    #[error("Failed to deserialize message: {0}")]
+    DeserializeFailed(String),
 }
 
 /// Protocol and message errors
