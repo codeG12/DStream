@@ -1,0 +1,9 @@
+{
+  "instance_url": "https://yourcompany.acumatica.com",
+  "username": "admin",
+  "password": "your-password-here",
+  "tenant": "YourCompany",
+  "endpoint_name": "Default",
+  "endpoint_version": "24.200.001",
+  "page_size": 100
+}

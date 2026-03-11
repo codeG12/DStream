@@ -1,9 +1,7 @@
 use crate::core::errors::{NatsError, Result};
 
-/// Configuration for connecting to a NATS server.
 #[derive(Debug, Clone)]
 pub struct NatsConfig {
-    /// NATS server URL (e.g. `nats://localhost:4222`)
     pub server_url: String,
 }
 
@@ -22,7 +20,6 @@ pub struct NatsClient {
 }
 
 impl NatsClient {
-    /// Connect to the NATS server described by `config`.
     pub async fn connect(config: &NatsConfig) -> Result<Self> {
         let client = async_nats::connect(&config.server_url)
             .await
@@ -33,7 +30,6 @@ impl NatsClient {
         Ok(Self { client })
     }
 
-    /// Publish raw bytes to a subject.
     pub async fn publish(&self, subject: &str, payload: bytes::Bytes) -> Result<()> {
         self.client
             .publish(subject.to_string(), payload)
@@ -43,7 +39,6 @@ impl NatsClient {
         Ok(())
     }
 
-    /// Subscribe to a subject and return the message stream.
     pub async fn subscribe(
         &self,
         subject: &str,
@@ -59,7 +54,6 @@ impl NatsClient {
         Ok(subscriber)
     }
 
-    /// Flush pending published messages to the server.
     pub async fn flush(&self) -> Result<()> {
         self.client
             .flush()

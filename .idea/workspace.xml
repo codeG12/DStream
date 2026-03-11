@@ -12,20 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cf763c0-5ea3-4d5f-b4a4-9164a337d6a9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/cli/runner.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/runner.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/catalog.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/client.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/http.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/listen_stream.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/message.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/nats.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/pagination.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/protocol.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/state.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/traits.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/traits.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/write_stream.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/service/sync.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/sync.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +118,7 @@
       <workItem from="1770863712528" duration="1053000" />
       <workItem from="1772951380548" duration="7735000" />
       <workItem from="1773077100740" duration="3524000" />
-      <workItem from="1773160948595" duration="2931000" />
+      <workItem from="1773160948595" duration="3413000" />
     </task>
     <servers />
   </component>
