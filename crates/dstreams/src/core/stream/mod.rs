@@ -1,4 +1,4 @@
-mod nats;
+pub mod nats;
 pub mod message;
 pub mod writer;
 pub mod listener;

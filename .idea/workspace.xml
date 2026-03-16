@@ -5,13 +5,17 @@
   </component>
   <component name="CargoProjects">
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml">
-      <package file="$PROJECT_DIR$">
+      <package file="$PROJECT_DIR$/crates/dstreams">
+        <feature name="default" enabled="true" />
+      </package>
+      <package file="$PROJECT_DIR$/crates/tap-acumatica">
         <feature name="default" enabled="true" />
       </package>
     </cargoProject>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4cf763c0-5ea3-4d5f-b4a4-9164a337d6a9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/project_x.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project_x.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -119,6 +123,7 @@
       <workItem from="1772951380548" duration="7735000" />
       <workItem from="1773077100740" duration="3524000" />
       <workItem from="1773160948595" duration="3413000" />
+      <workItem from="1773250093933" duration="902000" />
     </task>
     <servers />
   </component>

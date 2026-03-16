@@ -45,6 +45,16 @@ pub struct CatalogRow {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct StreamConfigurationRow {
+    pub id: i32,
+    pub stream_id: i32,
+    pub catalog_item_id: i32,
+    pub is_selected: Option<bool>,
+    pub replication_method: Option<String>,
+    pub replication_key: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 pub struct StateRow {
     pub stream_id: i32,
     pub table_name: String,
@@ -82,6 +92,15 @@ pub struct CreateCatalogEntry {
     pub replication_method: Option<String>,
     pub replication_key: Option<String>,
     pub is_selected: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct CreateStreamConfiguration {
+    pub stream_id: i32,
+    pub catalog_item_id: i32,
+    pub is_selected: bool,
+    pub replication_method: String,
+    pub replication_key: Option<String>,
 }
 
 #[derive(Debug, Clone)]

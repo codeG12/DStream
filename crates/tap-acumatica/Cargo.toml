@@ -8,6 +8,9 @@ name = "tap-acumatica"
 path = "src/main.rs"
 
 [dependencies]
+dstreams = { path = "../dstreams" }
+tokio = { version = "1.0", features = ["full"] }
+sqlx = { version = "0.8", features = ["runtime-tokio", "postgres"] }
 reqwest = { version = "0.12", features = ["blocking", "cookies", "json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

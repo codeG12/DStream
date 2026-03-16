@@ -32,7 +32,8 @@ enum Commands {
     },
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let cli = Cli::parse();
 
     // Initialise tracing
@@ -48,11 +49,11 @@ fn main() -> Result<()> {
 
     match cli.command {
         Commands::Discover => {
-            tap::discover()?;
+            tap::discover().await?;
         }
         Commands::Sync { config } => {
             let cfg = AcumaticaConfig::from_file(&config)?;
-            tap::sync(cfg)?;
+            tap::sync(cfg).await?;
         }
     }
 

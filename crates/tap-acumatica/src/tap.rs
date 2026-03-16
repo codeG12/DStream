@@ -1,6 +1,11 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use chrono::Utc;
 use serde_json::json;
+
+use dstreams::core::db;
+use dstreams::core::stream::nats::{NatsClient, NatsConfig};
+use dstreams::core::stream::writer::StreamWriter;
+use dstreams::dal::models::{CreateStream, CreateStreamConfiguration, CatalogRow};
 
 use crate::client::AcumaticaClient;
 use crate::config::AcumaticaConfig;
@@ -12,7 +17,7 @@ use crate::entities::supported_streams;
 ///
 /// This does **not** require a live Acumatica connection — it returns
 /// the statically-known stream definitions.
-pub fn discover() -> Result<()> {
+pub async fn discover() -> Result<()> {
     let streams = supported_streams();
 
     let entries: Vec<serde_json::Value> = streams
@@ -51,70 +56,86 @@ pub fn discover() -> Result<()> {
 
 // ── Sync ────────────────────────────────────────────────────────────────
 
-/// Authenticate, fetch all records for each supported stream, and write
-/// them to stdout as JSONL (one JSON object per line).
-///
-/// Output format per line:
-/// ```json
-/// {"type":"RECORD","stream":"business_accounts","record":{...},"time_extracted":"..."}
-/// ```
-pub fn sync(config: AcumaticaConfig) -> Result<()> {
-    let mut client = AcumaticaClient::new(config)?;
-    client.login()?;
+/// Authenticate, fetch all records for each configured stream, write to stream_configuration,
+/// and publish to NATS.
+pub async fn sync(config: AcumaticaConfig) -> Result<()> {
+    // 1. Database Connection
+    let pool = db::client().await.context("Failed to connect to Postgres")?;
+    
+    // 2. NATS Connection
+    let nats_cfg = NatsConfig::default();
+    let nats_client = NatsClient::connect(&nats_cfg).await.context("Failed to connect to NATS")?;
+    let writer = StreamWriter::new(nats_client);
 
-    let streams = supported_streams();
+    let mut acumatica_client = AcumaticaClient::new(config.clone())?;
+    acumatica_client.login()?;
 
-    for stream in &streams {
-        tracing::info!(stream = stream.stream_name, "Starting sync");
+    // Assuming we have dummy connector IDs or they exist (e.g. 1 and 2)
+    // Create a new stream
+    let stream_name = format!("acumatica_sync_{}", Utc::now().timestamp());
+    let stream = dstreams::dal::stream::create(&pool, CreateStream {
+        stream_name: stream_name.clone(),
+        source_connector_id: 1, // Placeholder
+        target_connector_id: 2, // Placeholder
+    }).await.context("Failed to create stream entry")?;
+    
+    tracing::info!(stream_id = stream.stream_id, stream_name = %stream.stream_name, "Created stream record");
 
-        // Emit SCHEMA message
-        let schema_msg = json!({
-            "type": "SCHEMA",
-            "stream": stream.stream_name,
-            "key_properties": stream.key_properties,
-            "replication_key": stream.replication_key,
-        });
-        println!("{}", serde_json::to_string(&schema_msg)?);
+    for (table_name, table_cfg) in &config.tables {
+        tracing::info!(table_name = %table_name, "Processing configured table");
 
-        // Fetch all records via paginated GET
-        let records = client.get_all_entity_records(stream.entity_name)?;
+        // Validate against Catalog
+        let catalog_item = sqlx::query_as::<_, CatalogRow>("SELECT * FROM catalog WHERE table_name = $1")
+            .bind(table_name)
+            .fetch_optional(&pool)
+            .await?
+            .ok_or_else(|| anyhow::anyhow!("Table '{}' not found in Postgres catalog", table_name))?;
 
-        let now = Utc::now().to_rfc3339();
-        for record in &records {
-            let msg = json!({
-                "type": "RECORD",
-                "stream": stream.stream_name,
-                "record": record,
-                "time_extracted": now,
-            });
-            println!("{}", serde_json::to_string(&msg)?);
-        }
-
-        // Emit STATE with last-modified bookmark
-        if let Some(rk) = stream.replication_key {
-            if let Some(last) = find_max_field(&records, rk) {
-                let state_msg = json!({
-                    "type": "STATE",
-                    "value": {
-                        "bookmarks": {
-                            stream.stream_name: {
-                                rk: last,
-                            }
+        // Create Stream Configuration
+        dstreams::dal::stream_configuration::create(&pool, CreateStreamConfiguration {
+            stream_id: stream.stream_id,
+            catalog_item_id: catalog_item.catalog_id,
+            is_selected: true,
+            replication_method: table_cfg.replication_method.clone(),
+            replication_key: if table_cfg.valid_replication_keys.is_empty() { None } else { Some(table_cfg.valid_replication_keys.clone()) },
+        }).await.context("Failed to create stream_configuration entry")?;
+        
+        // Fetch data from Acumatica
+        let records = acumatica_client.get_all_entity_records(table_name)?;
+        
+        // Prepare state (bookmark)
+        let mut state = json!({});
+        if !table_cfg.valid_replication_keys.is_empty() {
+            if let Some(last) = find_max_field(&records, &table_cfg.valid_replication_keys) {
+                state = json!({
+                    "bookmarks": {
+                        table_name: {
+                            &table_cfg.valid_replication_keys: last
                         }
                     }
                 });
-                println!("{}", serde_json::to_string(&state_msg)?);
             }
         }
 
+        // Publish to NATS in chunks (or all at once if small enough)
+        // StreamEnvelope expects a Vec<Value>
+        writer.write(
+            stream.stream_id,
+            table_name,
+            "acumatica",
+            records.clone(),
+            state,
+        ).await.context("Failed to write to NATS")?;
+        
         tracing::info!(
-            stream = stream.stream_name,
+            table_name = %table_name,
             records = records.len(),
-            "Sync complete for stream"
+            "Sync complete for table"
         );
     }
-
-    client.logout();
+    
+    writer.flush().await?;
+    acumatica_client.logout();
     Ok(())
 }
 
@@ -122,9 +143,6 @@ pub fn sync(config: AcumaticaConfig) -> Result<()> {
 
 /// Find the maximum string value for a given Acumatica-style field
 /// across a set of records.
-///
-/// Acumatica wraps field values like `{ "FieldName": { "value": "..." } }`,
-/// so we look inside the `value` wrapper.
 fn find_max_field(records: &[serde_json::Value], field: &str) -> Option<String> {
     records
         .iter()

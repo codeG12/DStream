@@ -2859,9 +2859,12 @@ dependencies = [
  "anyhow",
  "chrono",
  "clap",
+ "dstreams",
  "reqwest",
  "serde",
  "serde_json",
+ "sqlx",
+ "tokio",
  "tracing",
  "tracing-subscriber",
 ]
